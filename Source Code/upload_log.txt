@@ -1,0 +1,185 @@
+<? php include("connection.php"); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style_braain_form.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>Brain Tumor Form</title>
+</head>
+<body>
+    <div class="container">
+        <header>Brain Tumor</header>
+
+        <form action="form_brain.php" method="POST" enctype="multipart/form-data">
+            <div class="form first">
+                <div class="details personsal">
+                    <span class="title"><b>Personal Details</b></span>
+
+                    <div class="fields">
+
+                        <div class="input-field">
+                            <label><b>Full Name</b></label>
+                            <input type="text"  placeholder="Enter your name" name="fname" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Date of Birth</b></label>
+                            <input type="date"  placeholder="Enter birth date" name="fdob" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Email</b></label>
+                            <input type="text"  placeholder="Enter your email" name="femail" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Mobile Number</b></label>
+                            <input type="number"  placeholder="Enter mobile number" name="fmob" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Gender</b></label>
+                            <input type="text"  placeholder="Enter your gender" name="fgend" required>
+                        </div>
+                        
+                        <div class="input-field">
+                            <label><b>Occupation</b></label>
+                            <input type="text"  placeholder="Enter your occupation" name="focc" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Your Photo</b></label>
+                            <input type="file"  placeholder="Upload your photo" name="fphoto" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Your ID Photo</b></label>
+                            <input type="file"  placeholder="Upload your ID photo" name="fid" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Disease Image</b></label>
+                            <input type="file"  placeholder="Upload your disease photo" name="fdimg" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Country</b></label>
+                            <input type="text"  placeholder="Enter your country" name="fcont" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>State</b></label>
+                            <input type="text"  placeholder="Enter your state" name="fstate" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label><b>Pin Code</b></label>
+                            <input type="number"  placeholder="Enter your pincode" name="fcode" required>
+                        </div>
+
+                    </div>
+                    
+                     </div>
+                    <button type="submit" class="Submit" name="submit">
+                        <span class="btnText">Submit</span>
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+<?php
+include("connection.php");
+
+// Check if the form is submitted
+if(isset($_POST['submit'])) {
+    $fname  = $_POST['fname'];
+    $fdob   = $_POST['fdob'];
+    $femail = $_POST['femail'];
+    $fmob   = $_POST['fmob'];
+    $fgend  = $_POST['fgend'];
+    $focc   = $_POST['focc'];
+    $fcont  = $_POST['fcont'];
+    $fstate = $_POST['fstate'];
+    $fcode  = $_POST['fcode'];
+
+    // File handling for photo, ID photo, and disease image
+    $fphoto = uploadFile('fphoto', 'alphoto/');
+    $fid    = uploadFile('fid', 'alphoto/');
+    $fimg   = uploadFile('fdimg', 'alphoto/');
+
+    if ($fphoto && $fid && $fimg) {
+        // Assuming you have a database connection ($conn) established
+
+        // Fix the table name and backtick for 'fimg'
+        $query = "INSERT INTO `brainform` (Fullname, DoB, Email, Mobile, Gender, Occupation, Photo, YourID, YourImage, Country, State, PinCode) VALUES ('$fname','$fdob','$femail','$fmob','$fgend','$focc','$fphoto','$fid','$fimg','$fcont','$fstate','$fcode')";
+        $data = mysqli_query($conn, $query);
+
+        if($data) {
+           // echo "Data Inserted into Database";
+        } else {
+            echo "Failed: " . mysqli_error($conn);  // Use mysqli_error to display the error message
+        }
+    } else {
+        // Handle file upload errors
+        echo "File upload failed.";
+    }
+}
+
+// Function to handle file uploads
+function uploadFile($fileInputName, $targetDirectory) {
+    $targetFile = $targetDirectory . basename($_FILES[$fileInputName]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    $uploadMessages = '';  // Variable to collect upload messages
+
+    // Check if file already exists
+    if (file_exists($targetFile)) {
+        $uploadMessages .= "Sorry, file already exists. ";
+        $uploadOk = 0;
+    }
+
+    // Check file size (you can modify this value according to your needs)
+    if ($_FILES[$fileInputName]["size"] > 500000) {
+        $uploadMessages .= "Sorry, your file is too large. ";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats (you can modify this list according to your needs)
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+        $uploadMessages .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed. ";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        $uploadMessages .= "File upload failed. ";
+    } else {
+        // Move the file to the specified directory
+        if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFile)) {
+            $uploadMessages .= "The file " . htmlspecialchars(basename($_FILES[$fileInputName]["name"])) . " has been uploaded successfully. ";
+            return $targetFile; // Return the path to the uploaded file
+        } else {
+            $uploadMessages .= "Sorry, there was an error uploading your file. ";
+            $uploadMessages .= "Error: " . $_FILES[$fileInputName]["error"] . " ";
+            return false;
+        }
+    }
+
+    // Log the upload messages (you can save this to a file or database)
+    file_put_contents('upload_log.txt', $uploadMessages, FILE_APPEND);
+
+    // Return false to indicate upload failure
+    return false;
+}
+?>
+
+Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, your file is too large. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, your file is too large. File upload failed. Sorry, your file is too large. File upload failed. Sorry, your file is too large. File upload failed. Sorry, your file is too large. File upload failed. Sorry, file already exists. File upload failed. Sorry, your file is too large. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, your file is too large. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, your file is too large. File upload failed. Sorry, only JPG, JPEG, PNG , GIF and PDF files are allowed. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, only JPG, JPEG, PNG , GIF and PDF files are allowed. File upload failed. Sorry, file already exists. File upload failed. Sorry, only JPG, JPEG, PNG , GIF and PDF files are allowed. File upload failed. Sorry, file already exists. File upload failed. Sorry, only JPG, JPEG, PNG , GIF and PDF files are allowed. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. Sorry, file already exists. File upload failed. 

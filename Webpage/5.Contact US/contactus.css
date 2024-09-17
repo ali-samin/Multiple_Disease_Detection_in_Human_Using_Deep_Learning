@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200; 300; 400; 500; 600; 700; 800; 900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+.contact{
+    position: relative;
+    min-height: 100vh;
+    padding: 50px 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: url('contact.jpg');
+    background-size: cover;
+    
+}
+
+.contact .content{
+    max-width: 900px;
+    text-align: center;
+}
+
+.contact .content h2{
+    font-size: 36px;
+    font-weight: 500;
+    color: black;
+    font-family: 'Poppins',fantasy;
+}
+
+.contact .content p{
+    font-family: 'Poppins',Georgia, 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: black;
+}
+
+.container{
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.container .contactInfo{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .contactInfo .box{
+    position: relative;
+    padding: 10px 0;
+    display: flex;
+}
+
+.container .contactInfo .box .icon{
+    min-width: 40px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+.container .contactInfo .box .text{
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    font-size: 16px;
+    font-family: 'Poppins', Georgia, 'Times New Roman', Times, serif;
+    font-weight: 300;
+}

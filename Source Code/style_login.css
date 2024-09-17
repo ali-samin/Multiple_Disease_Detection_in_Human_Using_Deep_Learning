@@ -1,0 +1,82 @@
+body{
+	margin: 0;
+	padding: 0;
+    background-image: url('brain_im_login.jpg');
+    background-size: 100% 720px;
+}
+
+.center
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400px;
+	background-color: white;
+	border-radius: 5px;
+	border: 1px solid black;
+}
+
+.center h1
+{
+	text-align: center;
+	padding-bottom: 20px;
+	border-bottom: 1px solid black;
+}
+.form
+{
+	padding-bottom: 15px;
+	margin: 0 20px;
+	text-align: center;
+}
+
+.textfield
+{
+	width: 100%;
+	height: 50px;
+	font-size: 18px;
+	border: 2px solid lightgrey;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding-left: 10px;
+	margin: 7px 0;
+}
+
+.btn
+{
+	width: 100%;
+	height: 50px;
+	background-color: lightgrey;
+	border-radius: 5px;
+	font-size: 20px;
+	margin: 7px 0;
+	color: black;
+	border: 0;
+	cursor: pointer;
+}
+
+.btn:hover
+{
+	background-color: antiquewhite;
+}
+
+.forgetpass
+{
+	font-size: 16px;
+	padding: 4px 0;
+	margin: 3px;
+}
+
+.link
+{
+	text-decoration: none;
+	color: blueviolet;
+}
+
+@media (max-width: 470px)
+{
+	.center
+	{
+		width: 88%;
+	}
+}
